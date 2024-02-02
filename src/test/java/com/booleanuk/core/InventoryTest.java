@@ -2,20 +2,23 @@ package com.booleanuk.core;
 
 import com.booleanuk.core.models.Inventory;
 import com.booleanuk.core.models.NotInInventoryException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 
 public class InventoryTest {
 	private Inventory inventory;
-
-	@Test
 	public void inInventoryTest() {
 		inventory = new Inventory();
 		Assertions.assertTrue(inventory.inInventory("BGLO"));
 		Assertions.assertFalse(inventory.inInventory("NONEXISTENT"));
 	}
-
+	@AfterEach
+	void tearDown() {
+		// Close the connection after each test
+		inventory.closeConnection();
+	}
 	@Test
 	public void getFillingsTest() {
 		inventory = new Inventory();

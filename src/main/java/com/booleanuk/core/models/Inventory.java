@@ -1,69 +1,100 @@
 package com.booleanuk.core.models;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 
 public class Inventory {
-	ArrayList<Item> inventory;
+	//ArrayList<Item> inventory;
 	ArrayList<DiscountBulk> discountsBulk;
 	ArrayList<DiscountCombo> discountsCombo;
+	private final DatabaseHandler databaseHandler;
 
 	public Inventory() {
+		this.databaseHandler = new DatabaseHandler();
 		init();
 	}
 
 	public boolean inInventory(String id) {
-		boolean inInventory = false;
-		for (Item item : inventory) {
-			if (item.getId().equals(id)) {
-				return true;
+		String sql = "SELECT COUNT(*) FROM products WHERE sku = ?";
+		try (ResultSet resultSet = databaseHandler.executeQuery(sql, id)) {
+			if (resultSet.next()) {
+				int count = resultSet.getInt(1);
+				return count > 0;
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		return false;
+		return false; // or throw a custom exception based on your application needs
 	}
 
 	public String getFillings() {
-		StringBuilder sb = new StringBuilder();
-		for (Item item : inventory) {
-			if (item instanceof Filling) {
-				sb.append(item.name + ":\t" + item.price + "\n");
+		String sql = "SELECT variant, price FROM products WHERE name = 'Filling'";
+		try (ResultSet resultSet = databaseHandler.executeQuery(sql)) {
+			StringBuilder sb = new StringBuilder();
+			while (resultSet.next()) {
+				String name = resultSet.getString("variant");
+				double price = resultSet.getDouble("price");
+				sb.append(name).append(":\t").append(price).append("\n");
 			}
+			if (!sb.isEmpty()) {
+				sb.deleteCharAt(sb.length() - 1);
+			}
+			return sb.toString();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ""; // or throw a custom exception based on your application needs
+	}
 
+	public String getItems() {
+		String sql = "SELECT sku FROM products";
+		try (ResultSet resultSet = databaseHandler.executeQuery(sql)) {
+			StringBuilder sb = new StringBuilder();
+			while (resultSet.next()) {
+				String sku = resultSet.getString("sku");
+				sb.append(sku);
+			}
+			return sb.toString();
+		} catch (SQLException e) {
+			// Log the exception or throw a custom exception
+			e.printStackTrace();
+			return ""; // or throw new CustomException("Error retrieving items", e);
+		} finally {
+			// Ensure that the database connection is closed
+			databaseHandler.closeConnection();
 		}
-		if (!sb.isEmpty()) {
-			sb.deleteCharAt(sb.length() - 1);
-		}
-		return sb.toString();
 	}
-	public String getItems(){
-		StringBuilder sb = new StringBuilder();
-		for(Item item : inventory){
-			sb.append(item.getId()+": ");
-			sb.append(String.format("%-25s",item.getType()+" "+item.getName()));
-			sb.append(item.getPrice()+"\n");
-		}
-		return sb.toString();
-	}
+
 
 	public double getPrice(String id) {
-		double price = 0;
-		for (Item item : inventory) {
-			if (item.id.equals(id)) {
-				return item.price;
+		String sql = "SELECT price FROM products WHERE sku = ?";
+		try (ResultSet resultSet = databaseHandler.executeQuery(sql, id)) {
+			if (resultSet.next()) {
+				return resultSet.getDouble("price");
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		return price;
+		return 0;
 	}
 
 	public String getName(String id) throws NotInInventoryException {
-		for (Item item : inventory) {
-			if (item.getId().equals(id)) {
-				return item.getName();
+		String sql = "SELECT variant FROM products WHERE sku = ?";
+		try (ResultSet resultSet = databaseHandler.executeQuery(sql, id)) {
+			if (resultSet.next()) {
+				return resultSet.getString("variant");
+			} else {
+				throw new NotInInventoryException(id);
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		throw new NotInInventoryException(id);
+		return null;
 	}
+
 
 	public double getBulkAmount(String id) {
 		for (DiscountBulk item : discountsBulk) {
@@ -102,11 +133,27 @@ public class Inventory {
 
 	public double getDiscountComboAmount(String[] pair) {
 		for (DiscountCombo combo : discountsCombo) {
-			if (Arrays.equals(combo.getComboItems(),pair)) {
+			if (Arrays.equals(combo.getComboItems(), pair)) {
 				return combo.getNewPrice();
 			}
 		}
 		return 0;
+	}
+
+	public String getType(String id) {
+		String sql = "SELECT name FROM products WHERE id = ?";
+		try (ResultSet resultSet = databaseHandler.executeQuery(sql, id)) {
+			if (resultSet.next()) {
+				return resultSet.getString("name");
+			} else {
+				throw new NotInInventoryException(id);
+			}
+
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} catch (NotInInventoryException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private void init() {
@@ -122,7 +169,7 @@ public class Inventory {
 		discountsBulk.add(d3);
 		discountsCombo.add(d4);
 
-
+/*
 		this.inventory = new ArrayList<>();
 		Item item1 = new Bagel("BGLO", "Onion", 0.49);
 		Item item2 = new Bagel("BGLP", "Plain", 0.39);
@@ -154,23 +201,25 @@ public class Inventory {
 		inventory.add(item13);
 		inventory.add(item14);
 
+ */
+
 	}
 
 
-	public String getType(String id) {
-		try {
-			return getItem(id).getType();
-		} catch (NotInInventoryException e) {
-			throw new RuntimeException(e);
-		}
-	}
 
+/*
 	private Item getItem(String id) throws NotInInventoryException {
-		for(Item item : inventory){
-			if (item.getId().equals(id)){
+		for (Item item : inventory) {
+			if (item.getId().equals(id)) {
 				return item;
 			}
 		}
 		throw new NotInInventoryException(id);
+	}
+
+ */
+
+	public void closeConnection() {
+		databaseHandler.closeConnection();
 	}
 }
