@@ -15,7 +15,7 @@ dependencies {
     implementation group: "com.twilio.sdk", name: "twilio", version: "9.0.+"
     implementation group: "org.slf4j", name: "slf4j-simple", version: "1.7.32"
     implementation 'com.sparkjava:spark-core:2.9.3' // Check for the latest version on Maven Central
-
+    implementation 'org.springframework.boot:spring-boot-starter'
 }
 
 test {

@@ -1,5 +1,7 @@
 package com.booleanuk.core;
 
+import com.booleanuk.core.models.Inventory;
+import com.booleanuk.core.models.NotInInventoryException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
