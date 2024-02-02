@@ -1,0 +1,250 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.booleanuk.core.Basket",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_2058424510 { 
+   	label=booleanuk
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_543727311 { 
+   	label=core
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   Bagel1325589212[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Bagel</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Basket1325589212[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Basket</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   extra: HashMap&lt;Integer, ArrayList&lt;String&gt;&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   inventory: Inventory [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   itemIndex: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   items: HashMap&lt;Integer, String&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   size: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ addExtra(index: int, id: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ addItem(id: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >- calcBulkTotal(discountItems: ArrayList&lt;String&gt;): double</TD></TR>
+<TR><TD ALIGN="LEFT" >- calcClosestMultiple(bulkAmount: HashMap&lt;String, Integer&gt;, bulkItem: String): int</TD></TR>
+<TR><TD ALIGN="LEFT" >- calcComboTotal(discountPairs: HashSet&lt;String[]&gt;, itemsLeft: ArrayList&lt;String&gt;): double</TD></TR>
+<TR><TD ALIGN="LEFT" >- calcExtraTotal(extra: HashMap&lt;Integer, ArrayList&lt;String&gt;&gt;): double</TD></TR>
+<TR><TD ALIGN="LEFT" >- calcItemsTotal(itemsLeft: ArrayList&lt;String&gt;): double</TD></TR>
+<TR><TD ALIGN="LEFT" >- calcSmallest(itemsLeft: ArrayList&lt;String&gt;, pair: String[]): int</TD></TR>
+<TR><TD ALIGN="LEFT" >- containsAllItems(items: ArrayList&lt;String&gt;, array: String[]): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- containsString(array: String[], target: String): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- countOccurrences(items: ArrayList&lt;String&gt;, stringsToCount: String[]): HashMap&lt;String, Integer&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >- fillBulkAmount(hasDiscount: ArrayList&lt;String&gt;): HashMap&lt;String, Integer&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >- fillDiscountPairs(itemsLeft: ArrayList&lt;String&gt;): HashSet&lt;String[]&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >- fillHasDisciunt(uniqueItems: HashSet&lt;String&gt;): ArrayList&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getPrice(id: String): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ inBasket(id: String): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- moveDiscountItems(itemsLeft: ArrayList&lt;String&gt;, bulkAmount: HashMap&lt;String, Integer&gt;): ArrayList&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ printReceipt(): String</TD></TR>
+<TR><TD ALIGN="LEFT" >- recieptEnding(sb: StringBuilder)</TD></TR>
+<TR><TD ALIGN="LEFT" >- recieptItems(sb: StringBuilder)</TD></TR>
+<TR><TD ALIGN="LEFT" >- recieptStart(sb: StringBuilder)</TD></TR>
+<TR><TD ALIGN="LEFT" >- removeComboitems(itemsLeft: ArrayList&lt;String&gt;, pair: String[], smallest: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ removeExtra(index: int, id: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ removeItem(index: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ showFillings(): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Coffee1325589212[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Coffee</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+DiscountBulk1325589212[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)DiscountBulk</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   amount: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   bulk: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   id: String [0..1]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+DiscountCombo1325589212[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)DiscountCombo</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   comboItems: String[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   newPrice: double [1]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Filling1325589212[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Filling</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Inventory1325589212[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Inventory</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   discountsBulk: ArrayList&lt;DiscountBulk&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   discountsCombo: ArrayList&lt;DiscountCombo&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   inventory: ArrayList&lt;Item&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getBulkAmount(id: String): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getBulkBulk(id: String): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getDiscountComboAmount(pair: String[]): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getName(id: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getPrice(id: String): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ hasDiscountBulk(id: String): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ inInventory(id: String): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- init()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Item1325589212[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Item</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   id: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   name: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   price: double [1]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+Basket1325589212 -> Inventory1325589212[label="inventory
+[0..1]"];
+Inventory1325589212 -> DiscountBulk1325589212[label="discountsBulk
+[0..*]"];
+Inventory1325589212 -> DiscountCombo1325589212[label="discountsCombo
+[0..*]"];
+Inventory1325589212 -> Item1325589212[label="inventory
+[0..*]"];
+Item1325589212 -> Bagel1325589212[arrowhead=none, arrowtail=empty, dir=both];
+Item1325589212 -> Coffee1325589212[arrowhead=none, arrowtail=empty, dir=both];
+Item1325589212 -> Filling1325589212[arrowhead=none, arrowtail=empty, dir=both];
+    
+}
+@enduml
