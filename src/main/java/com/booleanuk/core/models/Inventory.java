@@ -31,7 +31,8 @@ public class Inventory {
 	}
 
 	public String getFillings() {
-		String sql = "SELECT variant, price FROM products WHERE name = 'Filling'";
+		String sql = "SELECT variant, price FROM products WHERE type_id =(" +
+				"SELECT id FROM product_types WHERE type = 'Filling')";
 		try (ResultSet resultSet = databaseHandler.executeQuery(sql)) {
 			StringBuilder sb = new StringBuilder();
 			while (resultSet.next()) {

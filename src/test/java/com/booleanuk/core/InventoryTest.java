@@ -16,7 +16,6 @@ public class InventoryTest {
 	}
 	@AfterEach
 	void tearDown() {
-		// Close the connection after each test
 		inventory.closeConnection();
 	}
 	@Test

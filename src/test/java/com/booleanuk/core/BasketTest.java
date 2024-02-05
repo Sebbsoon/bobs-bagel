@@ -1,6 +1,7 @@
 package com.booleanuk.core;
 
 import com.booleanuk.core.models.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -8,11 +9,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 class BasketTest {
-
-
+Inventory inventory;
+	@AfterEach
+	void tearDown() {
+		inventory.closeConnection();
+	}
 	@Test
 	public void addItemTest() {
-		Inventory inventory = new Inventory();
+		inventory = new Inventory();
 		Basket basket = new Basket(inventory);
 		Assertions.assertFalse(basket.inBasket("BGLP"));
 		Assertions.assertFalse(basket.inBasket("BGLO"));
@@ -27,7 +31,7 @@ class BasketTest {
 
 	@Test
 	public void removeItemTest() {
-		Inventory inventory = new Inventory();
+		 inventory = new Inventory();
 		Basket basket = new Basket(inventory);
 		try {
 			basket.addItem("BGLP");
@@ -47,7 +51,7 @@ class BasketTest {
 
 	@Test
 	public void basketIsFullTest() {
-		Inventory inventory = new Inventory();
+		 inventory = new Inventory();
 		Basket basket = new Basket(inventory);
 		Assertions.assertFalse(basket.isFull());
 		try {
@@ -73,7 +77,7 @@ class BasketTest {
 
 	@Test
 	public void inBasketTest() {
-		Inventory inventory = new Inventory();
+		 inventory = new Inventory();
 		Basket basket = new Basket(inventory);
 		Assertions.assertFalse(basket.inBasket("BGLP"));
 		try {
@@ -86,14 +90,14 @@ class BasketTest {
 
 	@Test
 	public void showFillingsTest() {
-		Inventory inventory = new Inventory();
+		 inventory = new Inventory();
 		Basket basket = new Basket(inventory);
 		Assertions.assertEquals("Bacon:\t0.12\nEgg:\t0.12\nCheese:\t0.12\nCream Cheese:\t0.12\nSmoked Salmon:\t0.12\nHam:\t0.12", basket.showFillings());
 	}
 
 	@Test
 	public void setSizeTest() {
-		Inventory inventory = new Inventory();
+		 inventory = new Inventory();
 		Basket basket = new Basket(inventory);
 		Assertions.assertEquals(30, basket.getSize());
 		try {
@@ -114,7 +118,7 @@ class BasketTest {
 
 	@Test
 	public void getTotalCostTest() {
-		Inventory inventory = new Inventory();
+		 inventory = new Inventory();
 		Basket basket = new Basket(inventory);
 		try {
 			basket.addItem("BGLP");
@@ -126,7 +130,7 @@ class BasketTest {
 
 	@Test
 	public void addFillingTest() {
-		Inventory inventory = new Inventory();
+		 inventory = new Inventory();
 		Basket basket = new Basket(inventory);
 		try {
 			basket.addItem("BGLP");
@@ -140,7 +144,7 @@ class BasketTest {
 
 	@Test
 	public void removeFillingTest() {
-		Inventory inventory = new Inventory();
+		 inventory = new Inventory();
 		Basket basket = new Basket(inventory);
 		try {
 			basket.addItem("BGLP");
@@ -153,7 +157,7 @@ class BasketTest {
 
 	@Test
 	public void getPriceTest() {
-		Inventory inventory = new Inventory();
+		 inventory = new Inventory();
 		Basket basket = new Basket(inventory);
 		try {
 			Assertions.assertEquals(0.39, basket.getPrice("BGLP"));
@@ -167,7 +171,7 @@ class BasketTest {
 
 	@Test
 	public void buyBulkTest() {
-		Inventory inventory = new Inventory();
+		 inventory = new Inventory();
 		Basket basket2 = new Basket(inventory);
 		for (int i = 0; i < 12; i++) {
 			try {
@@ -268,7 +272,7 @@ class BasketTest {
 
 	@Test
 	public void printReceiptTest() {
-		Inventory inventory = new Inventory();
+		 inventory = new Inventory();
 		Basket basket = new Basket(inventory);
 		String receipt = basket.printReceipt();
 		LocalDateTime currentTime = LocalDateTime.now();
@@ -440,7 +444,7 @@ class BasketTest {
 	public void printReceiptDiscountTest() {
 		LocalDateTime currentTime = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		Inventory inventory = new Inventory();
+		 inventory = new Inventory();
 		Basket basket = new Basket(inventory);
 		String example;
 		try {
